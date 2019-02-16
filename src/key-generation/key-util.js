@@ -19,7 +19,7 @@ class KeyUtil {
     }
 
     getKey1() {
-        var key1 = this.key1; //caching to minimize property access
+        let key1 = this.key1; //caching to minimize property access
         this.k1++;
         if(this.k1 >= key1.length) {
             this.k1 = 0;
@@ -28,7 +28,7 @@ class KeyUtil {
     }
 
     getKey2() {
-        var key2 = this.key2;
+        let key2 = this.key2;
         this.k2++;
         if(this.k2 >= key2.length) {
             this.k2 = 0;

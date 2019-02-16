@@ -12,15 +12,15 @@ class SecretManager {
 
     secretReader() {
         return new Promise( (resolve, reject) => {
-            var reader = createReadStream(this.secretPath);
+            let reader = createReadStream(this.secretPath);
             reader.on("data", (chunk) => {
                 this.sBitLen = this.sBitLen + chunk.byteLength;
                 this.chunkBuffer.push(chunk);
             });
             reader.on("end", () => {
                 this.sBitLen = (this.sBitLen * 8);
-                var sBitLen = this.sBitLen;
-                var len = [(sBitLen >> 24) & 0x000000FF, (sBitLen >> 16) & 0x000000FF, (sBitLen >> 8) & 0x000000FF, sBitLen & 0x000000FF];
+                let sBitLen = this.sBitLen;
+                let len = [(sBitLen >> 24) & 0x000000FF, (sBitLen >> 16) & 0x000000FF, (sBitLen >> 8) & 0x000000FF, sBitLen & 0x000000FF];
                 this.chunkBuffer.unshift(len);
                 this.sBitLen = this.sBitLen + 32;
                 resolve();
@@ -32,7 +32,7 @@ class SecretManager {
     }
 
     getNextBit() {
-        var byte = this.byte;
+        let byte = this.byte;
         if(typeof byte === "undefined") {
             byte = this.addByte();
             if(!byte && byte !== 0) {
@@ -40,7 +40,7 @@ class SecretManager {
             }
         }
 
-        var bit = ((byte >> this.pos--) & 0x01);
+        let bit = ((byte >> this.pos--) & 0x01);
         if(this.pos < 0) {
             this.pos = 7;
             this.byte = undefined;
@@ -50,7 +50,7 @@ class SecretManager {
     }
 
     addByte() {
-        var buffer = this.buffer;
+        let buffer = this.buffer;
         if(!buffer.length) {
             buffer = this.addBuffer();
             if(!buffer) {
@@ -63,7 +63,7 @@ class SecretManager {
     }
 
     addBuffer() {
-        var chunkBuffer = this.chunkBuffer;
+        let chunkBuffer = this.chunkBuffer;
         if(!chunkBuffer.length) {
             return null;
         }
@@ -72,8 +72,8 @@ class SecretManager {
     }
 
     toArray(buffer) {
-        var arr = [];
-        var len = buffer.byteLength || buffer.length;
+        let arr = [];
+        let len = buffer.byteLength || buffer.length;
         for(let i = 0; i < len; i++) {
             arr[i] = buffer[i];
         }

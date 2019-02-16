@@ -56,15 +56,15 @@ class KeyGen {
     }
 
     getRandomBinary() {
-        var min = 0; //inclusive
-        var max = 2; //exclusive
+        let min = 0; //inclusive
+        let max = 2; //exclusive
         return Math.floor(Math.random() * (max - min) + min);
     }
 
     getRandomKey1Len() {
-        var min = 16;
-        var max = 56;
-        var len = Math.floor(Math.random() * (max - min) + min);
+        let min = 16;
+        let max = 56;
+        let len = Math.floor(Math.random() * (max - min) + min);
         if(len%2) {
             len++;
         }

@@ -1,5 +1,5 @@
 const Jimp = require("jimp");
-var keyUtil = require("../key-generation/key-util.js");
+const keyUtil = require("../key-generation/key-util.js");
 
 class DecodeStegno {
 
@@ -22,13 +22,13 @@ class DecodeStegno {
 
     decode() {
         return new Promise( async(resolve, reject) => {
-            var sourceImg = this.sourceImg;
-            var image = await Jimp.read(sourceImg);
-            var img_data = image.bitmap.data;
+            let sourceImg = this.sourceImg;
+            let image = await Jimp.read(sourceImg);
+            let img_data = image.bitmap.data;
 
-            var sBitLen = this.getSecretLength(img_data);
-            var i = 0, b = 32;
-            var secretStr = "", byteBuffer = "";
+            let sBitLen = this.getSecretLength(img_data);
+            let i = 0, b = 32;
+            let secretStr = "", byteBuffer = "";
             while(i < sBitLen) {
                 byteBuffer = byteBuffer + this.processByte(img_data, b);
                 if(byteBuffer.length === 8) {
@@ -43,8 +43,8 @@ class DecodeStegno {
     }
 
     getSecretLength(img_data) {
-        var b = 0;
-        var bitStr = "";
+        let b = 0;
+        let bitStr = "";
         while(b < 32) {
             bitStr = bitStr + this.processByte(img_data, b);
             b++;
@@ -57,12 +57,12 @@ class DecodeStegno {
     }
 
     processByte(img_data, b) {
-        var colorCode = this.getColor(b);
-        var byte = img_data[b];
-        var key1 = keyUtil.getKey1();
-        var msb = this.getMSB(byte);
-        var kr = (msb ^ key1);
-        var bit = "";
+        let colorCode = this.getColor(b);
+        let byte = img_data[b];
+        let key1 = keyUtil.getKey1();
+        let msb = this.getMSB(byte);
+        let kr = (msb ^ key1);
+        let bit = "";
 
         switch(colorCode) {
 
@@ -95,7 +95,7 @@ class DecodeStegno {
     }
 
     getBit(byte) {
-        var key2 = keyUtil.getKey2();
+        let key2 = keyUtil.getKey2();
         return ((byte >> key2) & 0x01);
     }
 }

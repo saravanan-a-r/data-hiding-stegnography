@@ -1,6 +1,6 @@
-var SecretManager = require("./secret-manager");
+const SecretManager = require("./secret-manager");
 const Jimp = require("jimp");
-var keyUtil = require("../key-generation/key-util");
+const keyUtil = require("../key-generation/key-util");
 
 class EncodeStegno extends SecretManager{
     
@@ -37,24 +37,24 @@ class EncodeStegno extends SecretManager{
 
     encode() {
         return new Promise( async(resolve, reject) => {
-            var sourceImg = this.sourceImg;
-            var image = await Jimp.read(sourceImg);
-            var width = image.bitmap.width;
-            var height = image.bitmap.height;
+            let sourceImg = this.sourceImg;
+            let image = await Jimp.read(sourceImg);
+            let width = image.bitmap.width;
+            let height = image.bitmap.height;
             
-            var new_img = image.clone(); 
-            var img_data = new_img.bitmap.data;
+            let new_img = image.clone(); 
+            let img_data = new_img.bitmap.data;
 
             await this.secretReader();
 
-            var sBitLen = this.sBitLen;
+            let sBitLen = this.sBitLen;
 
             if(!this.canFit(img_data.length, sBitLen)) {
                 reject("Your secret file <" + this.secretPath + "> is too big to fit!!!");
                 return;
             }
 
-            var b = 0, i = 0;
+            let b = 0, i = 0;
 
             let bits = '';
             while(i < sBitLen) {
@@ -79,11 +79,11 @@ class EncodeStegno extends SecretManager{
     }
 
     processByte(img_data, b, bit) {
-        var colorCode = this.getColor(b);
-        var byte = img_data[b];
-        var key1 = keyUtil.getKey1();
-        var msb = this.getMSB(byte);
-        var kr = (msb ^ key1);
+        let colorCode = this.getColor(b);
+        let byte = img_data[b];
+        let key1 = keyUtil.getKey1();
+        let msb = this.getMSB(byte);
+        let kr = (msb ^ key1);
 
         switch(colorCode) {
 
@@ -114,7 +114,7 @@ class EncodeStegno extends SecretManager{
     }
 
     storeBit(byte, bit) {
-        var key2 = keyUtil.getKey2();
+        let key2 = keyUtil.getKey2();
         if(((byte >> key2) & 0x01) !== bit) {
             if(bit) {
                 byte = (byte | (1 << key2));
